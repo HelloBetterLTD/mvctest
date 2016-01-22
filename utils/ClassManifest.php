@@ -36,15 +36,40 @@ class ClassManifest extends Manifest
 				}
 			}
 		}
+
+		self::$class_manifest = $classes;
+
+		foreach($classes as $class => $classInfo){
+			$children = array();
+			foreach($classes as $otherClass => $otherClassInfo){
+				if(self::is_a($otherClass, $class)){
+					$children[] = $otherClass;
+				}
+			}
+			$classes[$class]['children'] = $children;
+		}
+		self::$class_manifest = $classes;
+
 		file_put_contents(TEMP_PATH . '/class_manifest', serialize($classes));
 		self::$class_manifest = $classes;
 	}
 
+
+	/**
+	 * @param $class
+	 * @return bool
+	 */
 	public static function has_class($class)
 	{
-		return array_key_exists($class, self::$class_manifest);
+		return array_key_exists($class, self::get_class_manifest());
 	}
 
+
+	/**
+	 * @param $class
+	 * @param $type
+	 * @return bool
+	 */
 	public static function is_a($class, $type)
 	{
 		if(self::has_class($class)){
@@ -55,11 +80,38 @@ class ClassManifest extends Manifest
 				if(in_array($type, self::$class_manifest[$class]['extends'])){
 					return true;
 				}
-				return is_a(self::$class_manifest['extends'][0], $type);
+				if(!empty(self::$class_manifest[$class]['extends'])){
+					return self::is_a(self::$class_manifest[$class]['extends'][0], $type);
+				}
 			}
 		}
 		return false;
 	}
+
+
+	/**
+	 * @param $class
+	 * @return mixed
+	 */
+	public static function subclasses_for($class)
+	{
+		if(self::has_class($class)){
+			return self::$class_manifest[$class]['children'];
+		}
+	}
+
+
+	public static function get_ancestry($class)
+	{
+		$ancestry = array();
+		$manifest = self::get_class_manifest();
+		if(isset($manifest[$class]) && isset($manifest[$class]['extends']) && !empty($manifest[$class]['extends'])){
+			$ancestry[] = $manifest[$class]['extends'][0];
+			$ancestry = array_merge($ancestry, self::get_ancestry($manifest[$class]['extends'][0]));
+		}
+		return $ancestry;
+	}
+
 
 	/**
 	 * @return mixed|null

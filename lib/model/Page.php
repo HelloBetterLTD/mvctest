@@ -16,7 +16,8 @@ class Page extends Record
 			'Title'				=> 'Varchar(255)',
 			'URLSegment'		=> 'Varchar(255)',
 			'MetaTitle'			=> 'Varchar(255)',
-			'Content'			=> 'Text'
+			'Content'			=> 'Text',
+			'Test'				=> 'Text'
 		);
 	}
 

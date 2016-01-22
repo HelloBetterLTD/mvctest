@@ -22,4 +22,21 @@ class Build extends Controller
 	}
 
 
+	public function index(){
+		$classes = ClassManifest::subclasses_for('Record');
+
+		$str = '<p>Data base building</p>';
+		$str.= '<ul>';
+		foreach($classes as $class){
+			if($class != 'Record'){
+				$str.= Record::make_table($class);
+			}
+		}
+
+		$str.= '</ul>';
+
+		return $str;
+	}
+
+
 } 
