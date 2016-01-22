@@ -10,6 +10,15 @@
 class Record extends Object
 {
 
+	public function __construct($record = array())
+	{
+		if($record) {
+			foreach($record as $key => $value){
+				$this->$key = $value;
+			}
+		}
+	}
+
 	public static function fields()
 	{
 		return array(

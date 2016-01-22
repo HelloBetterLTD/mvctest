@@ -10,4 +10,16 @@
 class Build extends Controller
 {
 
+	public function getDefaultRecord(){
+
+		$page = new Page(array(
+			'Title'			=> 'Build System',
+			'Content'		=> 'Your system is being built'
+		));
+
+		return $page;
+
+	}
+
+
 } 
