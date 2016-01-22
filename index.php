@@ -47,7 +47,7 @@ set_error_handler(function($errNo, $errStr, $errFile, $errLine){
 			break;
 
 		default:
-			echo "Unknown error type: [$errNo] $errStr<br />\n";
+			echo "Unknown error type: [$errNo] $errStr<br>$errFile Line {$errLine}<br />\n";
 			break;
 	}
 

@@ -25,9 +25,24 @@ class View extends Object
 		$this->controller = $controller;
 	}
 
+	public function getController()
+	{
+		return $this->controller;
+	}
+
 	public function setContents($content)
 	{
 		$this->content = $content;
+	}
+
+	public function getContents()
+	{
+		return $this->content;
+	}
+
+	public function getLayout()
+	{
+		return $this->layout;
 	}
 
 	public function getTemplate(){
@@ -60,13 +75,19 @@ class View extends Object
 		if(isset($templates['Layout'])){
 			$liquid = new Template();
 			$liquid->parse(file_get_contents($templates['Layout']));
-			$this->layout = $liquid->render();
+			$this->layout = $this->processTemplate($liquid);
 		}
 
 		$liquid = new Template();
 		$liquid->parse(file_get_contents($templates['Main']));
-		echo $liquid->render();
+		echo $this->processTemplate($liquid);
 
+	}
+
+	public function processTemplate(Template $template)
+	{
+		$context = new SS_LiquidContext($this);
+		return $template->getRoot()->render($context);
 	}
 
 } 

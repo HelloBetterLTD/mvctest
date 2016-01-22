@@ -16,6 +16,9 @@ class Controller extends Object
 		$this->record = $record;
 	}
 
+	public function getRecord(){
+		return $this->record;
+	}
 
 
 	public function index(){

@@ -23,8 +23,10 @@ class Router extends Object
 			$page = new Page();
 			$page->ID = -1;
 			$page->URLSegment = $parts[0];
+			$page->Title = 'Build';
 
 			$controller = new $parts[0]();
+			$controller->setRecord($page);
 			$response->setController($controller);
 			$response->setContents($controller->index());
 

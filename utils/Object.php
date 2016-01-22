@@ -7,7 +7,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-class Object
+abstract class Object
 {
 
 

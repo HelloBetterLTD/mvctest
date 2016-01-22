@@ -21,7 +21,9 @@ class Record extends Object
 
 
 	public function __get($property) {
-		return $this->$property;
+		if(property_exists($this, $property)){
+			return $this->$property;
+		}
 	}
 
 
