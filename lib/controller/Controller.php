@@ -19,7 +19,7 @@ class Controller extends Object
 
 
 	public function index(){
-		echo 'TEST TEST';
+		return 'TEST TEST';
 	}
 
 } 

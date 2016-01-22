@@ -18,6 +18,7 @@ class View extends Object
 
 	private $controller;
 	private $content;
+	private $layout = "";
 
 	public function setController($controller)
 	{
@@ -54,19 +55,17 @@ class View extends Object
 
 	public function render(){
 
-		$arrTemplates = $this->getTemplate();
+		$templates = $this->getTemplate();
 
-		if(isset($arrTemplates['Layout'])){
-
+		if(isset($templates['Layout'])){
+			$liquid = new Template();
+			$liquid->parse(file_get_contents($templates['Layout']));
+			$this->layout = $liquid->render();
 		}
 
-		echo '<pre>' . print_r($arrTemplates, 1) . '</pre>';
-
-
-
-		// $liquid = new Template($protectedPath . 'templates' . DIRECTORY_SEPARATOR);
-
-
+		$liquid = new Template();
+		$liquid->parse(file_get_contents($templates['Main']));
+		echo $liquid->render();
 
 	}
 
