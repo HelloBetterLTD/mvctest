@@ -1,0 +1,17 @@
+{
+    "name": "SilverStripers/mvctest",
+    "authors": [
+        {
+            "name": "Nivanka Fonseka",
+            "email": "nivanka@silverstripers.com"
+        },
+        {
+            "name": "Manoj Pussawela",
+            "email": "manoj@silverstripers.com"
+        }
+    ],
+    "require": {
+        "liquid/liquid"     : "1.1",
+        "symfony/yaml"      : "v3.0.1"
+    }
+}

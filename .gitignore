@@ -1,0 +1,10 @@
+nbproject
+.idea
+.DS_Store
+.elasticbeanstalk
+.idea
+RESOURCES
+npm-debug.log
+node_modules
+vendor
+composer.lock
