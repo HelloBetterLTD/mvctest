@@ -45,7 +45,7 @@ class Record extends Object
 	 * @return mixed
 	 */
 	public function __get($property) {
-		if($this->field_exists($this, $property)){
+		if($this->field_exists($property)){
 			return $this->$property;
 		}
 	}
@@ -203,6 +203,12 @@ class Record extends Object
 	}
 
 
+	public static function find_by_id($id){
+		$class = get_called_class();
+		$obj = new $class();
+		return self::find_one('`' . $obj->base_class() . '`.`ID` = ' . (int)$id);
+	}
+
 	/**
 	 * @param string $where
 	 * @param string $limit
@@ -252,7 +258,7 @@ class Record extends Object
 
 		$cols = array();
 		foreach($ancestry as $className){
-			if($className !== 'Object' && $className !== 'Record'){
+			if(!Record::unreadable_class($className)){
 				if($tableCols = self::get_table_cols($className)){
 					foreach($tableCols as $col => $type){
 						if(!isset($cols[$col])){
@@ -279,7 +285,7 @@ class Record extends Object
 
 		$prevClass = "";
 		foreach($ancestry as $className){
-			if($className !== 'Object' && $className !== 'Record'){
+			if(!Record::unreadable_class($className)){
 				$tables[] = $className;
 				if($prevClass){
 					$on[] = "`{$prevClass}`.`ID` = `{$className}`.`ID`";
@@ -305,6 +311,103 @@ class Record extends Object
 
 		return $strRet;
 
+	}
+
+
+	/**
+	 * writes a record to the database from any data record.
+	 */
+	public function write()
+	{
+		$class = get_called_class();
+		$ancestry = array_merge(array($class), ClassManifest::get_ancestry($class));
+
+
+
+		if(!$this->ID){
+			$this->ID = $this->init_tables($ancestry);
+		}
+
+		$sqls = array();
+
+		foreach($ancestry as $className){
+			if(!Record::unreadable_class($className) && DB::table_exists($className)){
+				if($tableCols = self::get_table_cols($className)){
+
+					if(DB::query('SELECT 1 FROM `' . $className . '` WHERE ID = ' . $this->ID) === false){
+						DB::query('INSERT INTO `' . $className . '` (`ID`) VALUES (' . $this->ID . ')');
+					}
+
+					$values = array();
+					foreach($tableCols as $col => $type){
+						if($col != 'Created'){
+							if($this->$col){
+								$values[] = '`' . $col . '` = \'' . $this->$col . '\'';
+							}
+							else if (!in_array($col, array('ID', 'ClassName'))){
+								$values[] = '`' . $col . '` = \'\'';
+							}
+						}
+					}
+
+					if(!empty($values)){
+						$sqls[] = 'UPDATE `' . $className . '` SET ' . implode(' , ', $values) . ' WHERE ID = ' . $this->ID . ';';
+					}
+				}
+			}
+		}
+
+		if(count($sqls)){
+			foreach($sqls as $sql){
+				DB::query($sql);
+			}
+		}
+	}
+
+
+	/**
+	 * @param $ancestry
+	 * @return mixed
+	 */
+	public function init_tables($ancestry){
+		$baseClass = $this->base_class();
+
+		$createSQL = 'INSERT INTO `' . DB::raw2sql($baseClass)
+			.  '` (`ClassName`, `Created`) VALUES ( '
+			. '\'' . get_class($this) . '\', \'' . date('Y-m-d H:i:s') . '\' )';
+
+
+		DB::query($createSQL);
+
+		$id = DB::last_insert_id();
+
+		foreach($ancestry as $className){
+			if(!Record::unreadable_class($className) && $className != $baseClass){
+				DB::query('INSERT INTO `' . $className . '` (`ID`) VALUES (' . $id . ')');
+			}
+		}
+
+		return $id;
+	}
+
+
+
+
+	public function base_class(){
+		$class = get_called_class();
+		$ancestry = array_merge(array($class), ClassManifest::get_ancestry($class));
+		$baseClass = $class;
+		foreach($ancestry as $current){
+			if(!Record::unreadable_class($current)){
+				$baseClass = $current;
+			}
+		}
+		return $baseClass;
+	}
+
+
+	public static function unreadable_class($class){
+		return in_array($class, array('Record', 'Object'));
 	}
 
 

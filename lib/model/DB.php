@@ -29,21 +29,29 @@ class DB extends Object
 
 	}
 
-	public static function query($sql){
+	public static function query($sql)
+	{
 		$result = self::$conn->query($sql);
-		if (self::$conn->connect_errno) {
-			user_error("Connect failed: %s\n", self::$conn->connect_error);
+		if (self::$conn->error) {
+			user_error(sprintf("DB Error: %s,<br> %s\n", self::$conn->error, $sql), E_USER_ERROR);
 		}
 		return $result;
 	}
 
-	public static function raw2sql($string){
+	public static function raw2sql($string)
+	{
 		return self::$conn->real_escape_string($string);
 	}
 
-	public static function table_exists($table){
+	public static function table_exists($table)
+	{
 		$tables = self::query("SELECT 1 FROM `" . self::raw2sql($table) . "` LIMIT 1");
 		return $tables !== false;
+	}
+
+	public static function last_insert_id()
+	{
+		return self::$conn->insert_id;
 	}
 
 
