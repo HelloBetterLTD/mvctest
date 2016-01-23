@@ -10,6 +10,12 @@
             "email": "manoj@silverstripers.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url" : "git@github.com:SilverStripers/php-liquid.git"
+        }
+    ],
     "require": {
         "liquid/liquid"     : "1.1",
         "symfony/yaml"      : "v3.0.1"
