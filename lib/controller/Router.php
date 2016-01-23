@@ -17,6 +17,16 @@ class Router extends Object
 		array_shift($parts);
 
 		$response = new View();
+		$action = "index";
+
+		if(count($parts) == 1 && $parts[0] == ""){
+			$parts[0] = 'home';
+		}
+		if(count($parts) > 1 && $parts[1] != ""){
+			$action = trim($parts[1]);
+		}
+
+		$processed = false;
 
 		if($parts[0] && ClassManifest::has_class($parts[0]) && ClassManifest::is_a($parts[0], 'Controller')){
 
@@ -33,9 +43,34 @@ class Router extends Object
 
 			$controller->setRecord($page);
 			$response->setController($controller);
-			$response->setContents($controller->index());
+
+			if(method_exists($controller, $action)){
+				$response->setContents($controller->$action());
+				$processed = true;
+			}
+
 
 		}
+		else if ($page = Page::find_one("URLSegment = '" . DB::raw2sql($parts[0]) . "'")){
+			$controller = new PageController();
+			$controller->setRecord($page);
+			$controller->setRecord($page);
+			$response->setController($controller);
+			if(method_exists($controller, $action)){
+				$response->setContents($controller->$action());
+				$processed = true;
+			}
+		}
+
+
+		if(!$processed) {
+			$controller = new PageController();
+			$page = $controller->getDefaultRecord();
+			$controller->setRecord($page);
+			$response->setController($controller);
+			$response->setContents($controller->index());
+		}
+
 
 		echo $response->render();
 

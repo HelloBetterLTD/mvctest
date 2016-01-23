@@ -20,24 +20,64 @@ class SS_LiquidContext extends \Liquid\Context
 		if($this->controller){
 			$this->record = $this->controller->getRecord();
 		}
+
+		parent::__construct();
 	}
 
-	public function get($key){
+	public function get($key)
+	{
 		$value = "";
+		$parts = explode('.', $key);
+		foreach($parts as $part){
+			if(!empty($this->assigns) && isset($this->assigns[0]) && isset($this->assigns[0][$part])){
+				$value = $this->assigns[0][$part];
+			}
+			else{
+				$value = $this->resolveVariable($part, $value);
+			}
 
+
+			if(!$value){
+				break;
+			}
+		}
+		return $value;
+	}
+
+
+
+	public function resolveVariable($key, $lineage = null)
+	{
+		$value = null;
 		$method = 'get' . $key;
 
-		if(method_exists($this->viewer, $method)){
+		if($lineage && method_exists($lineage, $method)){
+			$value = $lineage->$lineage();
+		}
+		else if ($lineage && is_a($lineage, 'Record') && method_exists($lineage, $key)){
+			$value = $lineage->$key();
+		}
+		else if ($lineage && is_a($lineage, 'Record') && $lineage->field_exists($key)){
+			$value = $lineage->$key;
+		}
+		else if(0 && method_exists($this->viewer, $method)){
 			$value = $this->viewer->$method();
+		}
+		else if(method_exists($this->viewer, $key)){
+			$value = $this->viewer->$key();
 		}
 		else if ($this->controller && method_exists($this->viewer, $method)){
 			$value = $this->viewer->$method();
 		}
+		else if(method_exists($this->record, $key)){
+			$value = $this->record->$key();
+		}
 		else if ($this->record){
 			$value = $this->record->$key;
 		}
-
 		return $value;
 	}
+
+
 
 } 

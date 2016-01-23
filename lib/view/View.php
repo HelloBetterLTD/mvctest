@@ -90,4 +90,27 @@ class View extends Object
 		return $template->getRoot()->render($context);
 	}
 
+	public function getSettings(){
+		return Settings::find_one();
+	}
+
+
+	/**
+	 * @return array|bool
+	 */
+	public function getMenu()
+	{
+		$objects = Page::find();
+		return $objects;
+	}
+
+
+	/**
+	 * @return bool|string
+	 */
+	public function getYear()
+	{
+		return date('Y');
+	}
+
 } 

@@ -16,9 +16,17 @@ class Page extends Record
 			'Title'				=> 'Varchar(255)',
 			'URLSegment'		=> 'Varchar(255)',
 			'MetaTitle'			=> 'Varchar(255)',
+			'MenuTitle'			=> 'Varchar(255)',
 			'Content'			=> 'Text',
-			'Test'				=> 'Text'
+			'ParentID'			=> 'Int',
 		);
 	}
+
+
+	public function Link()
+	{
+		return $this->URLSegment;
+	}
+
 
 } 

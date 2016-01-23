@@ -14,6 +14,7 @@ class Build extends Controller
 
 		$page = new Page(array(
 			'Title'			=> 'Build System',
+			'MetaTitle'		=> 'Data base and config build',
 			'Content'		=> 'Your system is being built'
 		));
 

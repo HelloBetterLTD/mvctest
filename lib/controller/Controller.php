@@ -22,7 +22,7 @@ class Controller extends Object
 
 
 	public function index(){
-		return '';
+		return;
 	}
 
 } 
