@@ -29,4 +29,17 @@ class Page extends Record
 	}
 
 
+	public function getController()
+	{
+		$controllerClass = $this->ClassName . 'Controller';
+		if(ClassManifest::has_class($controllerClass)){
+			$controller = new $controllerClass();
+		}
+		else {
+			$controller = new PageController();
+		}
+		$controller->setRecord($this);
+		return $controller;
+	}
+
 } 

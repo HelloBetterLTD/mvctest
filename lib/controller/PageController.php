@@ -10,17 +10,5 @@
 class PageController extends Controller
 {
 
-	public function getDefaultRecord(){
-
-		$page = new Page(array(
-			'Title'			=> '404',
-			'MetaTitle'		=> '404',
-			'MenuTitle'		=> '404',
-			'Content'		=> 'I am sorry I cant find that page you are asking.'
-		));
-
-		return $page;
-
-	}
 
 } 

@@ -12,17 +12,26 @@ class Controller extends Object
 
 	private $record = null;
 
-	public function setRecord($record){
+	public function setRecord($record)
+	{
 		$this->record = $record;
 	}
 
-	public function getRecord(){
+	public function getRecord()
+	{
 		return $this->record;
 	}
 
 
-	public function index(){
+	public function index()
+	{
 		return;
 	}
+
+	public function getHTTPCode()
+	{
+		return 200;
+	}
+
 
 } 

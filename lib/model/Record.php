@@ -12,6 +12,10 @@ class Record extends Object
 
 	protected $record = array();
 
+
+	/**
+	 * @param array $record
+	 */
 	public function __construct($record = array())
 	{
 		if($record) {
@@ -22,6 +26,10 @@ class Record extends Object
 		}
 	}
 
+
+	/**
+	 * @return array
+	 */
 	public static function fields()
 	{
 		return array(
@@ -234,6 +242,10 @@ class Record extends Object
 	}
 
 
+	/**
+	 * @param $class
+	 * @return string
+	 */
 	public static function get_select($class)
 	{
 		$ancestry = array_reverse(array_merge(array($class), ClassManifest::get_ancestry($class)), true);
@@ -255,7 +267,10 @@ class Record extends Object
 	}
 
 
-
+	/**
+	 * @param $class
+	 * @return string
+	 */
 	public static function get_joined_from($class)
 	{
 		$ancestry = array_merge(array($class), ClassManifest::get_ancestry($class));
@@ -292,11 +307,19 @@ class Record extends Object
 
 	}
 
+
+	/**
+	 * @return $this
+	 */
 	public function toLiquid()
 	{
 		return $this;
 	}
 
+
+	/**
+	 * @return array
+	 */
 	public function toArray()
 	{
 		return $this->record;

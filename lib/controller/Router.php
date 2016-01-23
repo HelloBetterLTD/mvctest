@@ -10,6 +10,9 @@
 class Router extends Object
 {
 
+	/**
+	 *
+	 */
 	public static function route()
 	{
 		$url = $_GET['url'];
@@ -52,9 +55,7 @@ class Router extends Object
 
 		}
 		else if ($page = Page::find_one("URLSegment = '" . DB::raw2sql($parts[0]) . "'")){
-			$controller = new PageController();
-			$controller->setRecord($page);
-			$controller->setRecord($page);
+			$controller = $page->getController();
 			$response->setController($controller);
 			if(method_exists($controller, $action)){
 				$response->setContents($controller->$action());
@@ -64,13 +65,16 @@ class Router extends Object
 
 
 		if(!$processed) {
-			$controller = new PageController();
+			$controller = new NotFoundController();
 			$page = $controller->getDefaultRecord();
 			$controller->setRecord($page);
 			$response->setController($controller);
 			$response->setContents($controller->index());
 		}
 
+		if(!headers_sent()){
+			http_response_code($controller->getHTTPCode());
+		}
 
 		echo $response->render();
 

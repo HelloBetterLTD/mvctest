@@ -10,6 +10,9 @@
 class Build extends Controller
 {
 
+	/**
+	 * @return Page
+	 */
 	public function getDefaultRecord(){
 
 		$page = new Page(array(
@@ -23,6 +26,9 @@ class Build extends Controller
 	}
 
 
+	/**
+	 * @return string|void
+	 */
 	public function index(){
 		$classes = ClassManifest::subclasses_for('Record');
 

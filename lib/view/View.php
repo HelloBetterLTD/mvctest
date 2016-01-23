@@ -45,9 +45,12 @@ class View extends Object
 		return $this->layout;
 	}
 
-	public function getTemplate(){
+	public function getTemplate($action = ""){
 		$templates = array();
-		if(file_exists(TEMPLATE_PATH . '/' . get_class($this->controller) . '.tpl')){
+		if($action && file_exists(TEMPLATE_PATH . '/' . get_class($this->controller) . '_' . $action . '.tpl')){
+			$templates['Main'] = TEMPLATE_PATH . '/' . get_class($this->controller) . '_' . $action . '.tpl';
+		}
+		else if(file_exists(TEMPLATE_PATH . '/' . get_class($this->controller) . '.tpl')){
 			$templates['Main'] = TEMPLATE_PATH . '/' . get_class($this->controller) . '.tpl';
 		}
 		else if (file_exists(TEMPLATE_PATH . '/Page.tpl')){
@@ -58,7 +61,10 @@ class View extends Object
 		}
 
 
-		if(file_exists(TEMPLATE_PATH . '/Layout' . get_class($this->controller) . '.tpl')){
+		if(file_exists(TEMPLATE_PATH . '/Layout' . get_class($this->controller) . '_' . $action . '.tpl')){
+			$templates['Layout'] = TEMPLATE_PATH . '/Layout' . get_class($this->controller) . '_' . $action . '.tpl';
+		}
+		else if(file_exists(TEMPLATE_PATH . '/Layout' . get_class($this->controller) . '.tpl')){
 			$templates['Layout'] = TEMPLATE_PATH . '/Layout' . get_class($this->controller) . '.tpl';
 		}
 		else if (file_exists(TEMPLATE_PATH . '/Layout/Page.tpl')){
@@ -68,9 +74,9 @@ class View extends Object
 		return $templates;
 	}
 
-	public function render(){
+	public function render($action = ""){
 
-		$templates = $this->getTemplate();
+		$templates = $this->getTemplate($action);
 
 		if(isset($templates['Layout'])){
 			$liquid = new Template();
