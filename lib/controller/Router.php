@@ -16,6 +16,16 @@ class Router extends Object
 	public static function route()
 	{
 		$url = $_GET['url'];
+
+		$base = ConfigManifest::get_config('BasePath');
+		if($base && $base != '/' && strpos($url, $base) === 0){
+			$url = substr($url, strlen($base));
+		}
+
+		if(empty($url)){
+			$url = '/';
+		}
+
 		$parts = explode('/', $url);
 		array_shift($parts);
 
@@ -30,6 +40,7 @@ class Router extends Object
 		}
 
 		$processed = false;
+
 
 		if($parts[0] && ClassManifest::has_class($parts[0]) && ClassManifest::is_a($parts[0], 'Controller')){
 

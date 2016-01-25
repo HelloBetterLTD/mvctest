@@ -3,3 +3,4 @@ Database:
   user: 'root'
   password: 'root'
   db: 'mvctest'
+BasePath: '/'

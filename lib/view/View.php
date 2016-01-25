@@ -119,4 +119,8 @@ class View extends Object
 		return date('Y');
 	}
 
+	public function getBase(){
+		return ConfigManifest::get_config('BasePath');
+	}
+
 } 
