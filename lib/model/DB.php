@@ -29,10 +29,10 @@ class DB extends Object
 
 	}
 
-	public static function query($sql)
+	public static function query($sql, $skipError = false)
 	{
 		$result = self::$conn->query($sql);
-		if (self::$conn->error) {
+		if (self::$conn->error && !$skipError) {
 			user_error(sprintf("DB Error: %s,<br> %s\n", self::$conn->error, $sql), E_USER_ERROR);
 		}
 		return $result;
@@ -45,7 +45,7 @@ class DB extends Object
 
 	public static function table_exists($table)
 	{
-		$tables = self::query("SELECT 1 FROM `" . self::raw2sql($table) . "` LIMIT 1");
+		$tables = self::query("SELECT 1 FROM `" . self::raw2sql($table) . "` LIMIT 1", true);
 		return $tables !== false;
 	}
 
