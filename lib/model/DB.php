@@ -20,7 +20,7 @@ class DB extends Object
 		$pass = ConfigManifest::get_config('Database.password');
 		$database = ConfigManifest::get_config('Database.db');
 
-		if($host && $user && $pass && $database){
+		if($host && $user && $database){
 			self::$conn = new mysqli($host, $user, $pass, $database);
 		}
 		else {
