@@ -61,11 +61,11 @@ class View extends Object
 		}
 
 
-		if(file_exists(TEMPLATE_PATH . '/Layout' . get_class($this->controller) . '_' . $action . '.tpl')){
-			$templates['Layout'] = TEMPLATE_PATH . '/Layout' . get_class($this->controller) . '_' . $action . '.tpl';
+		if(file_exists(TEMPLATE_PATH . '/Layout/' . get_class($this->controller) . '_' . $action . '.tpl')){
+			$templates['Layout'] = TEMPLATE_PATH . '/Layout/' . get_class($this->controller) . '_' . $action . '.tpl';
 		}
-		else if(file_exists(TEMPLATE_PATH . '/Layout' . get_class($this->controller) . '.tpl')){
-			$templates['Layout'] = TEMPLATE_PATH . '/Layout' . get_class($this->controller) . '.tpl';
+		else if(file_exists(TEMPLATE_PATH . '/Layout/' . get_class($this->controller) . '.tpl')){
+			$templates['Layout'] = TEMPLATE_PATH . '/Layout/' . get_class($this->controller) . '.tpl';
 		}
 		else if (file_exists(TEMPLATE_PATH . '/Layout/Page.tpl')){
 			$templates['Layout'] = TEMPLATE_PATH . '/Layout/Page.tpl';
@@ -77,7 +77,7 @@ class View extends Object
 	public function render($action = ""){
 
 		$templates = $this->getTemplate($action);
-
+		
 		if(isset($templates['Layout'])){
 			$liquid = new Template();
 			$liquid->parse(file_get_contents($templates['Layout']));
