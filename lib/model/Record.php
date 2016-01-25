@@ -344,8 +344,13 @@ class Record extends Object
 							if($this->$col){
 								$values[] = '`' . $col . '` = \'' . $this->$col . '\'';
 							}
-							else if (!in_array($col, array('ID', 'ClassName'))){
-								$values[] = '`' . $col . '` = \'\'';
+                            else if (!in_array($col, array('ID', 'ClassName'))){
+                                if(stripos($type, 'Int') == 0){
+                                    $values[] = '`' . $col . '` = 0';
+                                }
+                                else {
+                                    $values[] = '`' . $col . '` = \'\'';
+                                }
 							}
 						}
 					}
