@@ -16,8 +16,8 @@ class BuildController extends Controller
 	public function getDefaultRecord(){
 
 		$page = new Page(array(
-			'Title'			=> 'Build System',
-			'MetaTitle'		=> 'Data base and config build',
+			'Title'			=> 'Building your system.',
+			'MetaTitle'		=> 'Database and config rebuilding',
 			'Content'		=> 'Your system is being built'
 		));
 

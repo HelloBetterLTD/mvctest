@@ -26,7 +26,7 @@ class ConfigManifest extends Manifest
 				$configs = array_merge($configs, Symfony\Component\Yaml\Yaml::parse(file_get_contents($path)));
 			}
 		}
-		file_put_contents(TEMP_PATH . '/config_manifest', serialize($configs));
+		file_put_contents(TEMP_PATH . DIRECTORY_SEPARATOR .'config_manifest', serialize($configs));
 		self::$config_manifest = $configs;
 
 	}
@@ -37,7 +37,7 @@ class ConfigManifest extends Manifest
 	public static function get_manifest()
 	{
 		if(!self::$config_manifest){
-			self::$config_manifest = unserialize(file_get_contents(TEMP_PATH . '/config_manifest'));
+			self::$config_manifest = unserialize(file_get_contents(TEMP_PATH . DIRECTORY_SEPARATOR. 'config_manifest'));
 		}
 		return self::$config_manifest;
 	}

@@ -50,7 +50,7 @@ class ClassManifest extends Manifest
 		}
 		self::$class_manifest = $classes;
 
-		file_put_contents(TEMP_PATH . '/class_manifest', serialize($classes));
+		file_put_contents(TEMP_PATH . DIRECTORY_SEPARATOR . 'class_manifest', serialize($classes));
 		self::$class_manifest = $classes;
 	}
 

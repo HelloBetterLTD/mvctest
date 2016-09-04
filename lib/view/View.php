@@ -47,28 +47,28 @@ class View extends Object
 
 	public function getTemplate($action = ""){
 		$templates = array();
-		if($action && file_exists(TEMPLATE_PATH . '/' . get_class($this->controller) . '_' . $action . '.tpl')){
-			$templates['Main'] = TEMPLATE_PATH . '/' . get_class($this->controller) . '_' . $action . '.tpl';
+		if($action && file_exists(TEMPLATE_PATH . DIRECTORY_SEPARATOR . get_class($this->controller) . '_' . $action . '.tpl')){
+			$templates['Main'] = TEMPLATE_PATH . DIRECTORY_SEPARATOR . get_class($this->controller) . '_' . $action . '.tpl';
 		}
-		else if(file_exists(TEMPLATE_PATH . '/' . get_class($this->controller) . '.tpl')){
-			$templates['Main'] = TEMPLATE_PATH . '/' . get_class($this->controller) . '.tpl';
+		else if(file_exists(TEMPLATE_PATH . DIRECTORY_SEPARATOR . get_class($this->controller) . '.tpl')){
+			$templates['Main'] = TEMPLATE_PATH . DIRECTORY_SEPARATOR . get_class($this->controller) . '.tpl';
 		}
-		else if (file_exists(TEMPLATE_PATH . '/Page.tpl')){
-			$templates['Main'] = TEMPLATE_PATH . '/Page.tpl';
+		else if (file_exists(TEMPLATE_PATH . DIRECTORY_SEPARATOR . 'Page.tpl')){
+			$templates['Main'] = TEMPLATE_PATH . DIRECTORY_SEPARATOR . 'Page.tpl';
 		}
 		else {
-			$templates['Main'] = BASE_PATH . '/lib/view/templates/Page.tpl';
+			$templates['Main'] = BASE_PATH . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'Page.tpl';
 		}
 
 
-		if(file_exists(TEMPLATE_PATH . '/Layout/' . get_class($this->controller) . '_' . $action . '.tpl')){
-			$templates['Layout'] = TEMPLATE_PATH . '/Layout/' . get_class($this->controller) . '_' . $action . '.tpl';
+		if(file_exists(TEMPLATE_PATH . DIRECTORY_SEPARATOR . 'Layout' . DIRECTORY_SEPARATOR . get_class($this->controller) . '_' . $action . '.tpl')){
+			$templates['Layout'] = TEMPLATE_PATH . DIRECTORY_SEPARATOR . 'Layout' . DIRECTORY_SEPARATOR . get_class($this->controller) . '_' . $action . '.tpl';
 		}
-		else if(file_exists(TEMPLATE_PATH . '/Layout/' . get_class($this->controller) . '.tpl')){
-			$templates['Layout'] = TEMPLATE_PATH . '/Layout/' . get_class($this->controller) . '.tpl';
+		else if(file_exists(TEMPLATE_PATH . DIRECTORY_SEPARATOR . 'Layout' . DIRECTORY_SEPARATOR . get_class($this->controller) . '.tpl')){
+			$templates['Layout'] = TEMPLATE_PATH . DIRECTORY_SEPARATOR . 'Layout' . DIRECTORY_SEPARATOR . get_class($this->controller) . '.tpl';
 		}
-		else if (file_exists(TEMPLATE_PATH . '/Layout/Page.tpl')){
-			$templates['Layout'] = TEMPLATE_PATH . '/Layout/Page.tpl';
+		else if (file_exists(TEMPLATE_PATH . DIRECTORY_SEPARATOR . 'Layout' . DIRECTORY_SEPARATOR . 'Page.tpl')){
+			$templates['Layout'] = TEMPLATE_PATH . DIRECTORY_SEPARATOR . 'Layout' . DIRECTORY_SEPARATOR . 'Page.tpl';
 		}
 
 		return $templates;

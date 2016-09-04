@@ -14,13 +14,16 @@ $path = dirname(__FILE__);
 define('BASE_PATH', $path);
 define('TEMPLATE_PATH', $path . '/theme/templates');
 
+
 if(file_exists(BASE_PATH . '/cache')){
 	define('TEMP_PATH', BASE_PATH . '/cache');
 }
 else {
-	define('TEMP_PATH', sys_get_temp_dir() . 'cache' . str_replace('/', '--', BASE_PATH));
+	$tmpFileName = str_replace(DIRECTORY_SEPARATOR, '-', BASE_PATH);
+	$tmpFileName = str_replace(':', '--', $tmpFileName);
+	define('TEMP_PATH', sys_get_temp_dir() . 'mvc_test' . $tmpFileName);
 	if(!file_exists(TEMP_PATH)){
-		mkdir(TEMP_PATH, 777, true);
+		mkdir(TEMP_PATH);
 	}
 }
 
