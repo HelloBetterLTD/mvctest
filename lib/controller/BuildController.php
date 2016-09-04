@@ -7,7 +7,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-class Build extends Controller
+class BuildController extends Controller
 {
 
 	/**
