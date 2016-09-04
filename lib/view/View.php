@@ -104,9 +104,10 @@ class View extends Object
 	/**
 	 * @return array|bool
 	 */
-	public function getMenu()
+	public function getMenu($parent = 0)
 	{
-		$objects = Page::find();
+		$parentID = (int)$parent;
+		$objects = Page::find("ParentID = {$parentID} AND ShowInMenus = 1");
 		return $objects;
 	}
 
@@ -120,7 +121,7 @@ class View extends Object
 	}
 
 	public function getBase(){
-		return ConfigManifest::get_config('BasePath');
+		return Router::get_base();
 	}
 
 } 

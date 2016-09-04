@@ -15,6 +15,7 @@ class Page extends Record
 		return array(
 			'Title'				=> 'Varchar(255)',
 			'URLSegment'		=> 'Varchar(255)',
+			'ShowInMenus'		=> 'Int(1)',
 			'MetaTitle'			=> 'Varchar(255)',
 			'MenuTitle'			=> 'Varchar(255)',
 			'Content'			=> 'Text',
@@ -23,9 +24,24 @@ class Page extends Record
 	}
 
 
-	public function Link()
+	public function Link($action = "")
 	{
-		return $this->URLSegment;
+		if(empty($this->ParentID) || $this->ParentID == 0) {
+			return $this->URLSegment . "/" . $action;
+		}
+		if($parent = $this->getParent()){
+			return $parent->Link() . $this->URLSegment . "/" . $action;
+		}
+
+	}
+
+	public function getParent()
+	{
+		$parents = Page::find("ID = " . (int)$this->ParentID);
+		if($parents){
+			return $parents[0];
+		}
+		return null;
 	}
 
 
@@ -40,6 +56,12 @@ class Page extends Record
 		}
 		$controller->setRecord($this);
 		return $controller;
+	}
+
+
+	public function getChildren()
+	{
+		return Page::find("ParentID = " . (int)$this->ID . " AND ShowInMenus = 1");
 	}
 
 
