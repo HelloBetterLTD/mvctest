@@ -36,16 +36,21 @@ class Router extends Object
 
 		$path = isset($_SERVER['SCRIPT_FILENAME']) ? $_SERVER['SCRIPT_FILENAME'] : '';
 		$uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
+		$script = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : '';
+
+		$path = str_replace('/', DIRECTORY_SEPARATOR, $path);
+		$script = str_replace('/', DIRECTORY_SEPARATOR, $script);
+
 		if($uri && $path) {
 
 			if(substr($path, 0, strlen(BASE_PATH)) == BASE_PATH) {
 				$folderToRemove = substr($path, strlen(BASE_PATH));
-				if(substr($_SERVER['SCRIPT_NAME'], -strlen($folderToRemove)) == $folderToRemove) {
-					$base = substr($_SERVER['SCRIPT_NAME'], 0, -strlen($folderToRemove));
+				if(substr($script, -strlen($folderToRemove)) == $folderToRemove) {
+					$base = substr($script, 0, -strlen($folderToRemove));
 					if(empty($base)){
 						$base = '/';
 					}
-					return $base;
+					return str_replace(DIRECTORY_SEPARATOR, '/', $base);
 				}
 			}
 		}
