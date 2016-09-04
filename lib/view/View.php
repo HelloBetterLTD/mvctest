@@ -171,7 +171,7 @@ class View extends Object
 
 	public function getBase(){
 		$base = Router::get_base();
-		if ($base != '/' && substr($base, -1) == '/') {
+		if ($base != '/' && substr($base, -1) != '/') {
 			$base .= '/';
 		}
 		return $base;
