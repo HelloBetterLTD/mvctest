@@ -100,27 +100,40 @@ class View extends Object
 		$html = $this->processTemplate($liquid);
 
 		if(View::include_framework__css() && strpos($html, '</head>') !== false) {
-			$html = str_replace('</head>', '<link rel="stylesheet" href="/lib/static/framework.css" type="text/css"></head>', $html);
+			$html = str_replace('</head>', '<link rel="stylesheet" href="' . Router::get_base() . '/lib/static/framework.css" type="text/css"></head>', $html);
 		}
 
-		if($logs = Debug::get_logs()){
+		$logs = array();
+		if($errors = Debug::get_error_logs())
+		{
+			$logs[] = $errors;
+		}
 
-			if(strpos($html, '<body') !== false) {
-				$bodyStart = strpos($html, '<body');
-				$bodyEnd = strpos($html, '>', $bodyStart);
+		if($debugLogs = Debug::get_logs())
+		{
+			$logs[] = $debugLogs;
+		}
 
-				$before = substr($html, 0, $bodyEnd + 1);
-				$after = substr($html, $bodyEnd + 1);
+		if(strpos($html, '<body') !== false) {
+			$bodyStart = strpos($html, '<body');
+			$bodyEnd = strpos($html, '>', $bodyStart);
+			$before = substr($html, 0, $bodyEnd + 1);
+			$after = substr($html, $bodyEnd + 1);
 
-				$html = $before . $logs . $after;
-
-
+			$html = $before;
+			foreach($logs as $log) {
+				$html .= $log;
 			}
-			else {
-				echo $logs;
+			$html .= $after;
+
+		}
+		else {
+			foreach($logs as $log) {
+				echo $log;
 			}
 
 		}
+
 
 		echo $html;
 
@@ -157,7 +170,11 @@ class View extends Object
 	}
 
 	public function getBase(){
-		return Router::get_base();
+		$base = Router::get_base();
+		if ($base != '/' && substr($base, -1) == '/') {
+			$base .= '/';
+		}
+		return $base;
 	}
 
 } 

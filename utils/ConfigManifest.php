@@ -23,7 +23,10 @@ class ConfigManifest extends Manifest
 
 		foreach($files as $path => $info){
 			if($info['extension'] == 'yml' || $info['extension'] == 'yaml'){
-				$configs = array_merge($configs, Symfony\Component\Yaml\Yaml::parse(file_get_contents($path)));
+				$file = Symfony\Component\Yaml\Yaml::parse(file_get_contents($path));
+				if($file && is_array($file)) {
+					$configs = array_merge($configs, $file);
+				}
 			}
 		}
 		file_put_contents(TEMP_PATH . DIRECTORY_SEPARATOR .'config_manifest', serialize($configs));

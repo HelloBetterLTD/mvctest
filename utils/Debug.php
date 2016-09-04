@@ -11,6 +11,7 @@ class Debug extends Object
 {
 
 	private static $logs = array();
+	private static $errors = array();
 
 	/**
 	 * @param $message
@@ -34,6 +35,24 @@ class Debug extends Object
 		if(count(self::$logs))
 		{
 			return implode("\n", self::$logs);
+		}
+	}
+
+	public static function log_error($log, $bt)
+	{
+		self::$errors[] = "<div class='ss_error'><div class='ss_error__inner'>"
+			. $log
+			. "<pre>"
+			. Debug::display_filter_backtrace(debug_backtrace())
+			. "</pre>"
+			."</div></div>";
+	}
+
+	public static function get_error_logs()
+	{
+		if(count(self::$errors))
+		{
+			return implode("\n", self::$errors);
 		}
 	}
 

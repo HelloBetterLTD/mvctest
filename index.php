@@ -27,6 +27,26 @@ else {
 	}
 }
 
+if(file_exists(BASE_PATH . '/vendor/autoload.php')) {
+	require_once BASE_PATH . '/vendor/autoload.php';
+}
+else {
+	user_error('It doesnt look like you\'ve done a composer update. For more information <a href="https://github.com/SilverStripers/mvctest/wiki/Installation" target="_blank">Click here</a><br>', E_USER_WARNING);
+	exit(1);
+}
+
+require_once('utils/ClassLoader.php');
+require_once('utils/Object.php');
+require_once('utils/TokenisedRegularExpression.php');
+require_once('utils/Manifest.php');
+require_once('utils/ClassManifest.php');
+require_once('utils/ConfigManifest.php');
+
+if(Manifest::make_manifest()){
+	Manifest::reload_manifest();
+}
+
+
 set_error_handler(function($errNo, $errStr, $errFile, $errLine){
 	if (!(error_reporting() & $errNo)) {
 		return;
@@ -44,23 +64,23 @@ set_error_handler(function($errNo, $errStr, $errFile, $errLine){
 			Debug::display_filter_backtrace(debug_backtrace());
 			echo "</pre>";
 			echo "</div>";
-			echo "<link rel=\"stylesheet\" href=\"/lib/static/framework.css\" type=\"text/css\">";
+			echo "<link rel=\"stylesheet\" href=\"" .  Router::get_base() . "/lib/static/framework.css\" type=\"text/css\">";
 			exit(1);
 			break;
 
 		case E_USER_WARNING:
 			View::framework_css();
-			echo "<b>WARNING</b> [$errNo] $errStr<br />\n";
+			Debug::log_error("<b>WARNING</b> [$errNo] $errStr<br />", debug_backtrace());
 			break;
 
 		case E_USER_NOTICE:
 			View::framework_css();
-			echo "<b>NOTICE</b> [$errNo] $errStr<br />\n";
+			Debug::log_error("<b>NOTICE</b> [$errNo] $errStr<br />", debug_backtrace());
 			break;
 
 		default:
 			View::framework_css();
-			echo "Unknown error type: [$errNo] $errStr<br>$errFile Line {$errLine}<br />\n";
+			Debug::log_error("Unknown error type: [$errNo] $errStr<br>$errFile Line {$errLine}", debug_backtrace());
 			break;
 	}
 
@@ -71,23 +91,8 @@ set_error_handler(function($errNo, $errStr, $errFile, $errLine){
 });
 
 
-if(file_exists(BASE_PATH . '/vendor/autoload.php')) {
-	require_once BASE_PATH . '/vendor/autoload.php';
-}
-else {
-	user_error('It doesnt look like you\'ve done a composer update.', E_USER_WARNING);
-}
 
-require_once('utils/ClassLoader.php');
-require_once('utils/Object.php');
-require_once('utils/TokenisedRegularExpression.php');
-require_once('utils/Manifest.php');
-require_once('utils/ClassManifest.php');
-require_once('utils/ConfigManifest.php');
 
-if(Manifest::make_manifest()){
-	Manifest::reload_manifest();
-}
 
 $loader = ClassLoader::instance();
 $loader->registerAutoLoader();
