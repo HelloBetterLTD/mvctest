@@ -141,13 +141,24 @@ class Record extends Object
 
 		foreach($cols as $col => $type){
 			if($col !== 'ID' && array_key_exists($col, $currentCols) && strtolower($type) != strtolower($currentCols[$col])){
-				$queries[] = "ALTER TABLE `{$table}` CHANGE `{$col}` `{$col}` " . $type;
+				if(strpos(strtolower($type), 'int') === 0) {
+					$queries[] = "ALTER TABLE `{$table}` CHANGE `{$col}` `{$col}` " . $type . "  DEFAULT 0";
+				}
+				else {
+					$queries[] = "ALTER TABLE `{$table}` CHANGE `{$col}` `{$col}` " . $type;
+				}
+
 			}
 			else if (!array_key_exists($col, $currentCols)){
-				$queries[] = "ALTER TABLE `{$table}` ADD `{$col}` " . $type;
+				if(strpos($type, 'Int') == 0) {
+					$queries[] = "ALTER TABLE `{$table}` ADD `{$col}` " . $type . "  DEFAULT 0";
+				}
+				else {
+					$queries[] = "ALTER TABLE `{$table}` ADD `{$col}` " . $type;
+				}
 			}
-
 		}
+
 
 		if(count($queries)){
 			return $queries;
