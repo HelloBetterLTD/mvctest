@@ -14,7 +14,7 @@ class Manifest extends Object
 
 	public static function make_manifest()
 	{
-		if(isset($_GET['build'])){
+		if(isset($_GET['regenerate'])){
 			return true;
 		}
 		return (count(scandir(TEMP_PATH)) == 2);

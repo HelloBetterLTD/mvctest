@@ -74,10 +74,16 @@ if(Manifest::make_manifest()){
 	Manifest::reload_manifest();
 }
 
-
 $loader = ClassLoader::instance();
 $loader->registerAutoLoader();
 
 DB::init();
+
+
+//
+// add basic routes
+//
+Router::add_route('build', 'BuildController');
+
 
 Router::route();
