@@ -69,8 +69,8 @@ class SS_LiquidContext extends \Liquid\Context
 		else if ($this->controller && method_exists($this->viewer, $method)){
 			$value = $this->viewer->$method();
 		}
-		else if(method_exists($this->record, $key)){
-			$value = $this->record->$key();
+		else if(method_exists($this->record, $method)){
+			$value = $this->record->$method();
 		}
 		else if ($this->record){
 			$value = $this->record->$key;
