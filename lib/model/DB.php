@@ -14,18 +14,33 @@ class DB extends Object
 
 	public static function init()
 	{
+		$dbFile = BASE_PATH . DIRECTORY_SEPARATOR . 'db.php';
+		if(file_exists($dbFile)) {
+			$db_configs = @include(BASE_PATH . DIRECTORY_SEPARATOR . 'db.php');
+			if ($db_configs && is_array($db_configs)) {
+				$host = $db_configs['host'];
+				$user = $db_configs['username'];
+				$pass = $db_configs['password'];
+				$database = $db_configs['database'];
 
-		$host = ConfigManifest::get_config('Database.host');
-		$user = ConfigManifest::get_config('Database.user');
-		$pass = ConfigManifest::get_config('Database.password');
-		$database = ConfigManifest::get_config('Database.db');
-
-		if($host && $user && $database){
-			self::$conn = new mysqli($host, $user, $pass, $database);
+				if ($host && $user && $database) {
+					self::$conn = new mysqli($host, $user, $pass, $database);
+				} else {
+					user_error('I can\'t find any database records.', E_USER_ERROR);
+					exit;
+				}
+			} else {
+				user_error('I can\'t find any database records.', E_USER_ERROR);
+				exit;
+			}
 		}
 		else {
-			user_error('I can\'t find any database records', E_USER_WARNING);
+			user_error('I can\'t find any database configs file.', E_USER_ERROR);
+			exit;
 		}
+
+
+
 
 	}
 

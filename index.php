@@ -32,27 +32,39 @@ set_error_handler(function($errNo, $errStr, $errFile, $errLine){
 		return;
 	}
 
+	echo "<div class='ss_error'><div class='ss_error__inner'>";
+
 	switch ($errNo) {
 		case E_USER_ERROR:
 			echo "<b>Error</b> [$errNo] $errStr<br />\n";
 			echo "  Fatal error on line $errLine in file $errFile";
 			echo ", PHP " . PHP_VERSION . " (" . PHP_OS . ")<br />\n";
-			echo "Aborting...<br />\n";
+			echo "Aborting...\n";
+			echo "<pre>";
+			Debug::display_filter_backtrace(debug_backtrace());
+			echo "</pre>";
+			echo "</div>";
+			echo "<link rel=\"stylesheet\" href=\"/lib/static/framework.css\" type=\"text/css\">";
 			exit(1);
 			break;
 
 		case E_USER_WARNING:
-			echo "<b>My WARNING</b> [$errNo] $errStr<br />\n";
+			View::framework_css();
+			echo "<b>WARNING</b> [$errNo] $errStr<br />\n";
 			break;
 
 		case E_USER_NOTICE:
-			echo "<b>My NOTICE</b> [$errNo] $errStr<br />\n";
+			View::framework_css();
+			echo "<b>NOTICE</b> [$errNo] $errStr<br />\n";
 			break;
 
 		default:
+			View::framework_css();
 			echo "Unknown error type: [$errNo] $errStr<br>$errFile Line {$errLine}<br />\n";
 			break;
 	}
+
+	echo '</div></div>';
 
 	/* Don't execute PHP internal error handler */
 	return true;

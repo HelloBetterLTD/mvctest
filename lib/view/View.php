@@ -19,6 +19,17 @@ class View extends Object
 	private $controller;
 	private $content;
 	private $layout = "";
+	private static $framework_css = false;
+
+	public static function framework_css($include = true)
+	{
+		self::$framework_css = $include;
+	}
+
+	public static function include_framework__css()
+	{
+		return self::$framework_css;
+	}
 
 	public function setController($controller)
 	{
@@ -86,7 +97,32 @@ class View extends Object
 
 		$liquid = new Template();
 		$liquid->parse(file_get_contents($templates['Main']));
-		echo $this->processTemplate($liquid);
+		$html = $this->processTemplate($liquid);
+
+		if(View::include_framework__css() && strpos($html, '</head>') !== false) {
+			$html = str_replace('</head>', '<link rel="stylesheet" href="/lib/static/framework.css" type="text/css"></head>', $html);
+		}
+
+		if($logs = Debug::get_logs()){
+
+			if(strpos($html, '<body') !== false) {
+				$bodyStart = strpos($html, '<body');
+				$bodyEnd = strpos($html, '>', $bodyStart);
+
+				$before = substr($html, 0, $bodyEnd + 1);
+				$after = substr($html, $bodyEnd + 1);
+
+				$html = $before . $logs . $after;
+
+
+			}
+			else {
+				echo $logs;
+			}
+
+		}
+
+		echo $html;
 
 	}
 
