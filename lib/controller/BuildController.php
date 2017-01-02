@@ -37,6 +37,11 @@ class BuildController extends Controller
 		foreach($classes as $class){
 			if($class != 'Record'){
 				$str.= Record::make_table($class);
+				$singleton = singleton($class);
+				
+				if($singleton->methodExists('requireDefaultRecords')) {
+					$singleton->requireDefaultRecords();
+				}
 			}
 		}
 
