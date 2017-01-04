@@ -82,6 +82,8 @@ class Record extends Object
 
 		$cols = self::get_table_cols($class);
 
+		
+		echo '<pre>' . print_r($cols, 1) . '</pre>'; die();
 
 		if(DB::table_exists($class)){
 			$sql = self::update_query($cols, $class);
@@ -444,12 +446,14 @@ class Record extends Object
 		return $this->record;
 	}
 	
-	/**
-	 * requireDefaultRecords
-	 */
-	public function requireDefaultRecords()
+	public function DBField($field)
 	{
-		
+		$class = get_called_class();
+		$tableCols = self::get_table_cols($className);
+		if(isset($tableCols[$field])) {
+			echo $tableCols[$field]; die();
+		}
+		return false;
 	}
 
 

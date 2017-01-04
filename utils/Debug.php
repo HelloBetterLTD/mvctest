@@ -43,9 +43,10 @@ class Debug extends Object
 		self::$errors[] = "<div class='ss_error'><div class='ss_error__inner'>"
 			. $log
 			. "<pre>"
-			. Debug::display_filter_backtrace(debug_backtrace())
+			. Debug::display_filter_backtrace($bt)
 			. "</pre>"
 			."</div></div>";
+			
 	}
 
 	public static function get_error_logs()

@@ -15,7 +15,7 @@ class Page extends Record
 		return array(
 			'Title'				=> 'Varchar(255)',
 			'URLSegment'		=> 'Varchar(255)',
-			'ShowInMenus'		=> 'Int(1)',
+			'ShowInMenus'		=> 'Boolean',
 			'MetaTitle'			=> 'Varchar(255)',
 			'MenuTitle'			=> 'Varchar(255)',
 			'Content'			=> 'Text',
