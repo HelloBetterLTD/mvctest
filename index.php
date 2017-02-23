@@ -21,7 +21,7 @@ if(file_exists(BASE_PATH . '/cache')){
 else {
 	$tmpFileName = str_replace(DIRECTORY_SEPARATOR, '-', BASE_PATH);
 	$tmpFileName = str_replace(':', '--', $tmpFileName);
-	define('TEMP_PATH', sys_get_temp_dir() . 'mvc_test' . $tmpFileName);
+	define('TEMP_PATH', sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'mvc_test' . $tmpFileName);
 	if(!file_exists(TEMP_PATH)){
 		mkdir(TEMP_PATH);
 	}
