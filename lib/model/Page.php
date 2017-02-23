@@ -22,6 +22,33 @@ class Page extends Record
 			'ParentID'			=> 'Int',
 		);
 	}
+	
+	public function requireDefaultRecords()
+	{
+		if(!Page::find_one("URLSegment = 'home'")) {
+			$homePage = new Page(array(
+				'Title'				=> 'Welcome to SilverStripers MVC Test',
+				'URLSegment'		=> 'home',
+				'ShowInMenus'		=> '1',
+				'MetaTitle'			=> 'Home Page | SilverStripers PVT. LTD',
+				'MenuTitle'			=> 'Home',
+				'Content'			=> '<p>You can edit this content by changing the data records in the CMS.</p>'
+			));
+			$homePage->write();
+		}
+		
+		if(!Page::find_one("URLSegment = 'about-us'")) {
+			$homePage = new Page(array(
+				'Title'				=> 'About us',
+				'URLSegment'		=> 'about-us',
+				'ShowInMenus'		=> '1',
+				'MetaTitle'			=> 'About | SilverStripers PVT. LTD',
+				'MenuTitle'			=> 'About',
+				'Content'			=> '<p>You can edit this content by changing the data records in the CMS.</p>'
+			));
+			$homePage->write();
+		}
+	}
 
 
 	public function Link($action = "")

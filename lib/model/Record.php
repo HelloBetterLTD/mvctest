@@ -133,7 +133,7 @@ class Record extends Object
 
 		$result = DB::query('DESCRIBE `' . $table . '`');
 		$currentCols = array();
-		while($field = $result->fetch_assoc()){
+		if($result) while($field = $result->fetch_assoc()){
 			$currentCols[$field['Field']] = $field['Type'];
 		}
 
@@ -442,6 +442,14 @@ class Record extends Object
 	public function toArray()
 	{
 		return $this->record;
+	}
+	
+	/**
+	 * requireDefaultRecords
+	 */
+	public function requireDefaultRecords()
+	{
+		
 	}
 
 
